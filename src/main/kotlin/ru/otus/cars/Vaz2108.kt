@@ -6,6 +6,8 @@ import kotlin.random.Random
  * Восьмерка
  */
 class Vaz2108 private constructor(color: String) : VazPlatform(color) {
+    private val fuelSystem = FuelSystem.petrol()
+
     /**
      * Сам-себе-сборщик ВАЗ 2108.
      */
@@ -63,13 +65,16 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, fuel=${carOutput.getFuelContents()})"
     }
 
     /**
      * Делегируем приборы внутреннему классу
      */
     override val carOutput: CarOutput = VazOutput()
+
+    override val tankMouth: FuelSystem.TankMouth
+        get() = fuelSystem.mouth
 
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
@@ -78,5 +83,7 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
         }
+
+        override fun getFuelContents(): Int = fuelSystem.contents
     }
 }
